@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pokedex by Ahnaf</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='style.css') }}"
+      rel="stylesheet"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.js"
+      integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+        function listPokedexAhnaf() {
+            $.ajax ({
+                type: "GET",
+                url: "https://pokeapi.co/api/v2/pokemon",
+                success:function (response) {
+                    let results = response.results;
+
+                    for (let i = 0; i < results.length; i++) {
+                        let pokeName = results[i].name;
+
+                        let temp_html = `
+                        <div class="image-card">
+                            <a href="${pokeName}">
+                            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${i + 1}.png" alt="${pokeName}" />
+                            <div class="card-text">
+                                <p>${pokeName}</p>
+                            </div>
+                            </a>
+                        </div>
+                        `;
+
+                        $(".box-list").append(temp_html);
+                    }
+                }
+            })
+        }
+
+        $(document).ready(function () {
+            listPokedexAhnaf();
+        });
+    </script>
+    <!-- <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: 'https://pokeapi.co/api/v2/pokemon',
+                method: 'GET',
+                success: function (data) {
+                    displayPokemon(data.results);
+                },
+                error: function (error) {
+                    console.log('Error:', error);
+                }
+            });
+    
+            function displayPokemon(pokemonList) {
+                var pokemonContainer = $('.list-poke');
+    
+                $.each(pokemonList, function (index, pokemon) {
+                    // Fetch additional details including the sprite URL
+                    $.ajax({
+                        url: pokemon.url,
+                        method: 'GET',
+                        success: function (pokemonDetails) {
+                            var cardPoke = $('<div class="image-card"></div>');
+                            var anchor = $('<a href="' + pokemon.url + '" target="_blank"></a>');
+                            var image = $('<img src="' + pokemonDetails.sprites.front_default + '" alt="' + pokemonDetails.name + '">');
+                            var cardText = $('<div class="card-text"><p>' + pokemonDetails.name + '</p></div>');
+    
+                            anchor.append(image);
+                            anchor.append(cardText);
+                            cardPoke.append(anchor);
+                            pokemonContainer.append(cardPoke);
+                        },
+                        error: function (error) {
+                            console.log('Error:', error);
+                        }
+                    });
+                });
+            }
+        });
+    </script>     -->
+  </head>
+  <body>
+    <header>
+      <div class="head">
+        <h1>Pokédex by ahnaf</h1>
+      </div>
+    </header>
+    <div class="box-list">
+
+    </div>
+  </body>
+</html>

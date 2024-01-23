@@ -1,0 +1,107 @@
+html {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.head {
+    text-align: center;
+    font-size: smaller;
+}
+
+.box-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 20px;
+    max-width: 800px;
+    margin: 20px auto;
+}
+
+.image-card {
+    box-sizing: border-box;
+    padding: 10px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
+
+.image-card:hover {
+    transform: scale(1.05);
+}
+
+.image-card a {
+    text-decoration: none;
+    color: #333;
+}
+
+.image-card img {
+    width: 100%;
+    height: auto;
+}
+
+.card-text {
+    margin-top: 10px;
+}
+
+.card-text p {
+    font-size: 14px;
+}
+
+
+/* *MODAL */
+.modal {
+    display: none;
+    /* Modal disembunyikan secara default */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* Konten modal */
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 25%;
+    text-align: center;
+    position: relative;
+    border-radius: 8px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    -ms-border-radius: 8px;
+    -o-border-radius: 8px;
+}
+
+/* Tombol penutup modal */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Gaya konten modal */
+#modal-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+#modal-content h2 {
+    margin-top: 10px;
+    margin-left: 5px;
+    color: #333;
+}
