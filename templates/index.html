@@ -1,3 +1,4 @@
+<!-- NO IMAGES FROM PAGE 52 UNTIL 66 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,10 +21,10 @@
       crossorigin="anonymous"
     ></script>
     <script>
-    // Fungsi untuk menampilkan modal
-    function showModal(pokemonName, pokemonImage) {
-        // Mendapatkan informasi tambahan dengan memanggil API
-        $.ajax({
+        // Fungsi untuk menampilkan modal
+        function showModal(pokemonName, pokemonImage) {
+            // Mendapatkan informasi tambahan dengan memanggil API
+            $.ajax({
                 type: "GET",
                 url: `https://pokeapi.co/api/v2/pokemon/${pokemonName}`,
                 success: function(response) {
@@ -48,23 +49,25 @@
             });
         }
 
-            // Fungsi untuk menutup modal
-            function closeModal() {
+        // Fungsi untuk menutup modal
+        function closeModal() {
             $(".modal").css("display", "none");
         }
 
-        // Fungsi untuk menampilkan daftar Pokedex
-        function listPokedexAhnaf() {
-            $.ajax ({
+        let currentPage = 1;
+
+        function listPokedexAhnaf(page) {
+            let url = `https://pokeapi.co/api/v2/pokemon?offset=${(page - 1) * 20}&limit=20`;
+            $.ajax({
                 type: "GET",
-                url: "https://pokeapi.co/api/v2/pokemon",
-                success:function (response) {
+                url: url,
+                success: function (response) {
                     let results = response.results;
 
+                    $(".box-list").empty();
                     for (let i = 0; i < results.length; i++) {
                         let pokeName = results[i].name;
-                        let pokeUrl = results[i].url;
-                        let pokeImage = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${i + 1}.png`;
+                        let pokeImage = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${(page - 1) * 20 + i + 1}.png`;
 
                         let temp_html = `
                             <div class="image-card" onclick="showModal('${pokeName}', '${pokeImage}')">
@@ -79,30 +82,96 @@
 
                         $(".box-list").append(temp_html);
                     }
+
+                    let totalPages = Math.ceil(response.count / 20);
+                    updatePagination(totalPages);
+                },
+                error: function (error) {
+                    console.log('Error:', error);
                 }
-            })
+            });
         }
 
-        // Panggil fungsi untuk menampilkan daftar Pokedex saat halaman dimuat
+        function updatePagination(totalPages) {
+            $("#pagination").empty();
+            for (let i = 1; i <= totalPages; i++) {
+                let listItem;
+                if (i === currentPage || i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) {
+                    listItem = `<li onclick="changePage(${i})" class="${i === currentPage ? 'active' : ''}">${i}</li>`;
+                } else if (i === currentPage - 3 || i === currentPage + 3) {
+                    listItem = `<li class="ellipsis">...</li>`;
+                }
+                $("#pagination").append(listItem);
+            }
+        }
+
+
+        function changePage(page) {
+            currentPage = page;
+            listPokedexAhnaf(page);
+        }
+
+        function searchPokemon() {
+            let input = document.getElementById('searchInput').value.toLowerCase();
+            let cards = document.getElementsByClassName('image-card');
+
+            for (let i = 0; i < cards.length; i++) {
+                let pokemonName = cards[i].getElementsByTagName('p')[0].innerText.toLowerCase();
+                if (pokemonName.indexOf(input) > -1) {
+                    cards[i].style.display = '';
+                } else {
+                    cards[i].style.display = 'none';
+                }
+            }
+        }
+
+        // Fungsi untuk menampilkan popup box saat icon peringatan diklik
+        function showPopup() {
+            $(".popup").css("display", "block");
+        }
+
+        // Fungsi untuk menyembunyikan popup box saat tombol Close diklik
+        function hidePopup() {
+            $(".popup").css("display", "none");
+        }
+
         $(document).ready(function () {
-            listPokedexAhnaf();
+            listPokedexAhnaf(currentPage);
         });
     </script>
 </head>
 <body>
+    <!-- <div class="navbar">
+        <a href="#home">Home</a>
+        <a href="#news">News</a>
+        <a href="#contact">Contact</a>
+    </div> -->
+
     <header>
         <!-- !TAMBAHIN INFORMASI LAGI -->
         <div class="head">
             <h1>Pokédex by ahnaf</h1>
+            <input type="text" class="search-bar" id="searchInput" placeholder="Search Pokemon..." onkeyup="searchPokemon()">
+            <span class="alert-icon" onclick="showPopup()">⚠️</span>
         </div>
     </header>
 
     <!-- Daftar Pokedex -->
     <div class="box-list"></div>
 
+    <!-- Pagination -->
+    <div id="pagination-container">
+        <ul id="pagination"></ul>
+    </div>
     <!-- Modal -->
     <div class="modal">
         <div class="modal-content" id="modal-content"></div>
     </div>
+    <!-- Popup box -->
+    <div class="popup">
+        <span class="close" onclick="hidePopup()">&times;</span>
+        <h2>Read This!</h2>
+        <p>Attention! The search bar can only search for Pokémon on the page you are currently visiting. Thanks and enjoy!</p>
+    </div>
 </body>
-</html> 
+</html>
