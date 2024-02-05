@@ -7,6 +7,7 @@
     <title>Pokedex by Ahnaf</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="shortcut icon" href="{{ url_for('static', filename='pokeball.ico') }}" type="image/x-icon">
     <link
       href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300&display=swap"
       rel="stylesheet"
@@ -169,9 +170,11 @@
     </div>
     <!-- Popup box -->
     <div class="popup">
-        <span class="close" onclick="hidePopup()">&times;</span>
-        <h2>Read This!</h2>
-        <p>Attention! The search bar can only search for Pokémon on the page you are currently visiting. One more thing from page 52 until 66 there are no images sorry. Thanks and enjoy!</p>
+        <div class="popup-content">
+            <span class="close" onclick="hidePopup()">&times;</span>
+            <h2>Read This!</h2>
+            <p>Attention! The search bar can only search for Pokémon on the page you are currently visiting. One more thing from page 52 until 66 there are no images sorry. Thanks and enjoy!</p>
+        </div>
     </div>
 </body>
 </html>
