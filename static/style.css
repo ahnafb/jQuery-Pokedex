@@ -14,13 +14,6 @@ body {
 }
 
 /*  */
-/* Gaya untuk icon peringatan */
-.alert-icon {
-    margin-left: 5px;
-    cursor: pointer;
-    color: #888;
-}
-
 /* Gaya untuk popup box */
 .popup {
     display: none;
@@ -30,11 +23,9 @@ body {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    /* Warna latar belakang dengan transparansi */
     z-index: 9999;
     overflow: auto;
     backdrop-filter: blur(5px);
-    /* Efek blur untuk latar belakang */
 }
 
 /* Gaya untuk konten pop-up */
@@ -43,26 +34,49 @@ body {
     margin: 15% auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%;
+    width: 50%;
     border-radius: 8px;
+    font-size: large;
 }
 
 .navbar {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
     overflow: hidden;
     border-bottom: solid 1px #333;
 }
 
 .navbar a {
     float: left;
+    text-align: center;
     display: block;
     color: black;
-    text-align: center;
     padding: 14px 16px;
     text-decoration: none;
 }
 
 .navbar a:hover {
     color: white;
+}
+
+.pokeball {
+    width: 37px;
+    height: 37px;
+    margin-top: 4px;
+}
+
+.fa-github-alt {
+    font-size: 18px;
+    margin-right: 5px;
+    margin-top: 3px;
+    cursor: pointer;
+}
+
+.fa-bars {
+    font-size: 18px;
+    margin-top: 2px;
+    cursor: pointer;
 }
 
 .box-list {
@@ -85,7 +99,8 @@ body {
 }
 
 .image-card:hover {
-    border: 2px solid #464545; /* Misalnya, ganti warna border menjadi merah */
+    border: 2px solid #464545;
+    /* Misalnya, ganti warna border menjadi merah */
 }
 
 .image-card a {
@@ -199,15 +214,127 @@ body {
     cursor: default;
 }
 
+/* ================ */
+.cat-list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+    /* Adjust the height as needed */
+}
+
+.cat-list img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    /* Ensures the image fits within the container */
+}
+
+#refreshButton {
+    display: block;
+    margin: 0 auto;
+    margin-top: 20px;
+    /* Adjust as needed */
+    padding: 10px 20px;
+    background-color: #69d66c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#refreshButton:hover {
+    background-color: #3b863e;
+}
+
+#saveButton {
+    display: block;
+    margin: 0 auto;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #69d66c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#saveButton:hover {
+    background-color: #3b863e;
+}
+
+/* for List */
+.modal-sidebar {
+    display: none;
+    /* Modal defaultnya disembunyikan */
+    position: fixed;
+    /* Membuat modal berada pada posisi tetap di layar */
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100%;
+    background-color: #f4f4f4;
+    overflow-x: hidden;
+    padding-top: 0px;
+    z-index: 1;
+}
+
+.modal-sidebar-content {
+    margin-left: 15px;
+}
+
+.list-side {
+    margin-left: 20px;
+    font-size: larger;
+}
+
+.list-poke {
+    list-style: none;
+    padding: 8px;
+    cursor: pointer;
+    border-bottom: solid 1px black;
+}
+
+.list-poke:hover {
+    background-color: #f0f0f0; /* Ubah warna latar belakang saat dihover */
+    color: blue; /* Ubah warna teks saat dihover */
+}
+
+.close-side {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 35px;
+    margin-left: 50px;
+    cursor: pointer;
+    margin-top: 4px;
+}
+
+.pala-side {
+    display: flex;
+    align-items: center; /* Pusatkan secara vertikal */
+    justify-content: left; /* Pisahkan elemen secara horizontal */
+}
+
 /* Search Bar */
 .search-bar {
     padding: 8px;
-    width: 35vh;
+    width: 30vh;
+    margin-left: 17px;
     border: solid 1px grey;
     border-radius: 4px;
+    margin-bottom: 5px;
 }
 
 .search-bar::placeholder {
     font-family: 'Plus Jakarta Sans', sans-serif;
 
+}
+
+/* Gaya untuk icon peringatan */
+.alert-icon {
+    cursor: pointer;
+    color: #888;
 }

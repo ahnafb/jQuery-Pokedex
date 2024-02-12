@@ -10,127 +10,59 @@
     <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script>
-        let currentPage = 1;
-
-        function showModal(pokemonName, pokemonImage) {
+        function getRandomCatImage() {
             $.ajax({
-                type: "GET",
-                url: `https://pokeapi.co/api/v2/pokemon/${pokemonName}`,
+                type: 'GET',
+                url: 'https://api.thecatapi.com/v1/images/search',
                 success: function(response) {
-                    let abilities = response.abilities.map(ability => ability.ability.name).join(', ');
-                    let types = response.types.map(type => type.type.name).join(', ');
+                    // Mengambil URL gambar kucing dari respons JSON
+                    var imageUrl = response[0].url;
 
-                    $("#modal-content").html(`
-                        <span class="close" onclick="closeModal()">&times;</span>
-                        <h2>${pokemonName}</h2>
-                        <img src="${pokemonImage}" alt="${pokemonName}" />
-                        <p><strong>Abilities:</strong> ${abilities}</p>
-                        <p><strong>Types:</strong> ${types}</p>
-                    `);
-
-                    $(".modal").css("display", "block");
+                    // Menampilkan gambar kucing di halaman web
+                    $('#cat img').attr('src', imageUrl);
                 },
-                error: function(error) {
-                    console.log('Error:', error);
+                error: function(xhr, status, error) {
+                    console.error('Error fetching cat image:', error);
                 }
             });
         }
 
-        function closeModal() {
-            $(".modal").css("display", "none");
-        }
+        // Panggil fungsi untuk mendapatkan gambar kucing secara acak saat halaman dimuat
+        $(document).ready(function() {
+            getRandomCatImage();
 
-        function listPokedexAhnaf(page) {
-            let url = `https://pokeapi.co/api/v2/pokemon?offset=${(page - 1) * 20}&limit=20`;
-            $.ajax({
-                type: "GET",
-                url: url,
-                success: function (response) {
-                    let results = response.results;
-
-                    $(".box-list").empty();
-                    for (let i = 0; i < results.length; i++) {
-                        let pokeName = results[i].name;
-                        let pokeImage = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${(page - 1) * 20 + i + 1}.png`;
-
-                        let temp_html = `
-                            <div class="image-card" onclick="showModal('${pokeName}', '${pokeImage}')">
-                                <a>
-                                    <img src="${pokeImage}" alt="${pokeName}" />
-                                    <div class="card-text">
-                                        <p>${pokeName}</p>
-                                    </div>
-                                </a>
-                            </div>
-                        `;
-
-                        $(".box-list").append(temp_html);
-                    }
-
-                    let totalPages = Math.ceil(response.count / 20);
-                    updatePagination(totalPages);
-                },
-                error: function (error) {
-                    console.log('Error:', error);
-                }
+            // Menambahkan event listener untuk tombol refresh
+            $('#refreshButton').click(function() {
+                getRandomCatImage();
             });
-        }
 
-        function updatePagination(totalPages) {
-            $("#pagination").empty();
-            for (let i = 1; i <= totalPages; i++) {
-                let listItem;
-                if (i === currentPage || i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) {
-                    listItem = `<li onclick="changePage(${i})" class="${i === currentPage ? 'active' : ''}">${i}</li>`;
-                } else if (i === currentPage - 3 || i === currentPage + 3) {
-                    listItem = `<li class="ellipsis">...</li>`;
-                }
-                $("#pagination").append(listItem);
-            }
-        }
-
-        function changePage(page) {
-            currentPage = page;
-            listPokedexAhnaf(page);
-        }
-
-        function searchPokemon() {
-            let input = document.getElementById('searchInput').value.toLowerCase();
-            let cards = document.getElementsByClassName('image-card');
-
-            for (let i = 0; i < cards.length; i++) {
-                let pokemonName = cards[i].getElementsByTagName('p')[0].innerText.toLowerCase();
-                if (pokemonName.indexOf(input) > -1) {
-                    cards[i].style.display = '';
-                } else {
-                    cards[i].style.display = 'none';
-                }
-            }
-        }
-
-        $(document).ready(function () {
-            listPokedexAhnaf(currentPage);
+            // Menambahkan event listener untuk tombol save
+            $('#saveButton').click(saveCatImage);
         });
+
+        // Define a function to handle saving the cat image
+        function saveCatImage() {
+            // Get the source URL of the cat image
+            var imageUrl = $('#cat img').attr('src');
+
+            // Open the image in a new tab for saving
+            window.open(imageUrl);
+        }
     </script>
 </head>
 <body>
     <header>
         <div class="head">
-            <h1>Pokédex by Ahnaf</h1>
-            <input type="text" class="search-bar" id="searchInput" placeholder="Search Pokemon..." onkeyup="searchPokemon()">
+            <h1>Meow!</h1>
         </div>
     </header>
 
-    <div class="box-list"></div>
-
-    <ul id="pokemonList"></ul> <!-- Tambahkan elemen ini -->
-
-    <div id="pagination-container">
-        <ul id="pagination"></ul>
+    <div id="cat" class="cat">
+        <div class="cat-list">
+            <img src="" alt="">
+        </div>
     </div>
-
-    <div class="modal">
-        <div class="modal-content" id="modal-content"></div>
-    </div>
+    <button class="refresh" id="refreshButton">Refresh</button>
+    <button id="saveButton">Save</button>
 </body>
 </html>

@@ -103,12 +103,13 @@
                 let listItem;
                 if (i === currentPage || i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) {
                     listItem = `<li onclick="changePage(${i})" class="${i === currentPage ? 'active' : ''}">${i}</li>`;
-                } else if (i === currentPage - 5 || i === currentPage + 5) {
+                } else if (i === currentPage - 3 || i === currentPage + 3) {
                     listItem = `<li class="ellipsis">...</li>`;
                 }
                 $("#pagination").append(listItem);
             }
         }
+
 
         function changePage(page) {
             currentPage = page;
@@ -117,38 +118,16 @@
 
         function searchPokemon() {
             let input = document.getElementById('searchInput').value.toLowerCase();
-            let pokemonListItems = document.querySelectorAll('.modal-sidebar-content li');
+            let cards = document.getElementsByClassName('image-card');
 
-            pokemonListItems.forEach(item => {
-                let pokemonName = item.textContent.toLowerCase();
+            for (let i = 0; i < cards.length; i++) {
+                let pokemonName = cards[i].getElementsByTagName('p')[0].innerText.toLowerCase();
                 if (pokemonName.indexOf(input) > -1) {
-                    item.style.display = '';
+                    cards[i].style.display = '';
                 } else {
-                    item.style.display = 'none';
+                    cards[i].style.display = 'none';
                 }
-            });
-        }
-
-        function listSidebarPoke() {
-            $.ajax ({
-                type: "get",
-                url: "https://pokeapi.co/api/v2/pokemon?limit=1320",
-                success: function(response) {
-                    let results = response.results;
-
-                    $(".modal-sidebar-content").empty();
-                    for (let i = 0; i < results.length; i++) {
-                        let pokeNama = results[i].name;
-                        let pokeImage = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${i + 1}.png`;
-                        // !!! THE PROBS THE IMAGES NOT SHOWING UP!!!
-                        let temp_html = `
-                            <span class="close-side" onclick="hideSidebarModal()">&times;</span>
-                            <li class="list-poke" id="pokemonList" onclick="showModal('${pokeNama}')">${pokeNama}</li>
-                        `;
-                        $(".modal-sidebar-content").append(temp_html);
-                    }
-                }
-            });
+            }
         }
 
         // Fungsi untuk menampilkan popup box saat icon peringatan diklik
@@ -161,70 +140,44 @@
             $(".popup").css("display", "none");
         }
 
-        // Fungsi untuk menampilkan modal sidebar
-        function showSidebarModal() {
-            document.getElementById('modalSidebar').style.display = 'block';
-        }
-
-        // Fungsi untuk menyembunyikan modal sidebar
-        function hideSidebarModal() {
-            document.getElementById('modalSidebar').style.display = 'none';
-        }
-
         $(document).ready(function () {
             listPokedexAhnaf(currentPage);
-        });
-
-        $(document).ready(function () {
-            listSidebarPoke();
         });
     </script>
 </head>
 <body>
-    <div class="navbar">
-        <a class="fa fa-solid fa-bars" onclick="showSidebarModal()"></a>
-        <div>
-            <a href="/">Pokédex by ahnaf</a>
-            <img src="/static/pokeball.ico" class="pokeball" alt="">
+    <!-- <div class="navbar">
+        <a href="#home">Home</a>
+        <a href="#news">News</a>
+        <a href="#contact">Contact</a>
+    </div> -->
+
+    <header>
+        <!-- !TAMBAHIN INFORMASI LAGI -->
+        <div class="head">
+            <h1>Pokédex by ahnaf</h1>
+            <input type="text" class="search-bar" id="searchInput" placeholder="Search Pokemon..." onkeyup="searchPokemon()">
+            <span class="alert-icon" onclick="showPopup()">⚠️</span>
         </div>
-        <a class="fa fab fa-github-alt" href="https://github.com/ahnafb/jQuery-Pokedex" target="_blank"></a>
-    </div>
+    </header>
 
     <!-- Daftar Pokedex -->
     <div class="box-list"></div>
 
     <!-- Pagination -->
     <div id="pagination-container">
-        <ul id="pagination">
-            
-        </ul>
+        <ul id="pagination"></ul>
     </div>
     <!-- Modal -->
     <div class="modal">
         <div class="modal-content" id="modal-content"></div>
-    </div>
-    <!-- Modal Sidebar -->
-    <div class="modal-sidebar" id="modalSidebar">
-        <div class="pala-side">
-            <h3 class="list-side" style="margin-right: 7px;">List Pokemon</h3>
-            <span class="alert-icon" onclick="showPopup()">⚠️</span>
-        </div>
-        <input type="text" class="search-bar" id="searchInput" placeholder="Search Pokemon..." onkeyup="searchPokemon()">
-        <div class="modal-sidebar-content">
-        </div>
     </div>
     <!-- Popup box -->
     <div class="popup">
         <div class="popup-content">
             <span class="close" onclick="hidePopup()">&times;</span>
             <h2>Read This!</h2>
-            <p>Attention!<br> 
-            <p>
-                If you click on the Pokemon list in this sidebar and the picture does not show up, that is because I am still developing this website.
-            </p>
-            <p>
-                One more thing from page 52 until 66 there are no images sorry. Thanks and enjoy!</p>
-            </p>
+            <p>Attention! The search bar can only search for Pokémon on the page you are currently visiting. One more thing from page 52 until 66 there are no images sorry. Thanks and enjoy!</p>
         </div>
     </div>
 </body>
